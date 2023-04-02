@@ -4,25 +4,23 @@ const router = express.Router();
 const UserModel = require("../models/User");
 
 router.get("/getUser", async (req, res) => {
-  let userEmail = req.query.userEmail;
-  let userPassword = req.query.userPassword;
+  let userEmail = req.query.email;
+  let userPassword = req.query.password;
 
-try {
-  let result = await UserModel.find({userEmail:userEmail, userPassword:userPassword});
-  
-    if(result.length) {
+  try {
+    let result = await UserModel.find({
+      userEmail: userEmail,
+      userPassword: userPassword,
+    });
+
+    if (result.length) {
       res.send(result);
-      
     } else {
-
       res.send("glat");
     }
-  ;
-
-
-} catch (e) {
-  res.send(e);
-}
+  } catch (e) {
+    res.send(e);
+  }
 });
 
 router.post("/saveUser", async (req, res) => {
@@ -39,24 +37,16 @@ router.post("/saveUser", async (req, res) => {
   });
 
   try {
-    
     const userExist = await UserModel.find({ userEmail: userEmail });
-    
-    if (userExist.length)
-    {
-         return res
-      .status(422)
-      .json({ error: "Email is  already exists" });
-    }
-    else{
-   
+
+    if (userExist.length) {
+      return res.status(422).json({ error: "Email is  already exists" });
+    } else {
       const userRegister = await user.save();
-      if (userRegister)
-      {
-           res.status(201).json({ message: "User registered successfully" });
-          }
+      if (userRegister) {
+        res.status(201).json({ message: "User registered successfully" });
+      }
     }
-   
   } catch (e) {
     res.send(e);
   }
