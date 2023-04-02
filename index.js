@@ -13,11 +13,12 @@ app.use(cors());
 const cityRouter = require("./routes/cities.js");
 const garageRouter= require("./routes/garage.js");
 const userRouter= require("./routes/user.js");
+const sellerRouter= require("./routes/seller.js");
 
 app.use("/cities",cityRouter);
 app.use("/garage",garageRouter);
 app.use('/user',userRouter);
-
+app.use('/seller',sellerRouter);
 app.get("/",(req,res) =>{
     res.send(`server is running at port ${PORT}`)
 })
