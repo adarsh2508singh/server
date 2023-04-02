@@ -46,7 +46,7 @@ router.post("/saveUser", async (req, res) => {
     {
          return res
       .status(422)
-      .json({ error: "Email  already exists" });
+      .json({ error: "Email is  already exists" });
     }
     else{
    
