@@ -5,17 +5,15 @@ const GarageModel = require("../models/Garage");
 
 const CityModel = require("../models/Cities.js");
 router.get("/getGarage", async (req, res) => {
-
-    let cityName = req.query.cityName;
+  let cityName = req.query.cityName;
   try {
-    let result = await GarageModel.find({garageCity: cityName});
+    let result = await GarageModel.find({ garageCity: cityName });
     console.log(result);
     res.send(result);
   } catch (e) {
     res.send(e);
   }
 });
-
 
 router.post("/saveGarage", async (req, res) => {
   let garageImageId = req.body.garageImageId;
@@ -25,25 +23,22 @@ router.post("/saveGarage", async (req, res) => {
   let garageContact = req.body.garageContact;
 
   let garage = new GarageModel({
-    garageImageId:garageImageId,
+    garageImageId: garageImageId,
     garageName: garageName,
-    garageLocation:garageLocation,
-    garageCity:garageCity,
-    garageContact:garageContact
+    garageLocation: garageLocation,
+    garageCity: garageCity,
+    garageContact: garageContact,
   });
 
   // check whether a city exist or not
   // if exist then do not add it in cities collection
-  let cityResult = await CityModel.find({cityName: garageCity});
-  if(!cityResult.length){
-  let city= new CityModel({
-    cityName:garageCity,
-  })
-  await city.save();
+  let cityResult = await CityModel.find({ cityName: garageCity });
+  if (!cityResult.length) {
+    let city = new CityModel({
+      cityName: garageCity,
+    });
+    await city.save();
   }
-
-
-
 
   try {
     await garage.save();
@@ -53,10 +48,5 @@ router.post("/saveGarage", async (req, res) => {
     res.send(e);
   }
 });
-
-router.get("/hello", (req,res)=>{
-    res.send("hgn");
-})
-
 
 module.exports = router;
