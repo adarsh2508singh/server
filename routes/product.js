@@ -3,6 +3,19 @@ const router = express.Router();
 
 const ProductModel = require("../models/Product.js");
 
+
+router.get("/getProduct", async (req, res) => {
+  try {
+    let result = await ProductModel.find({});
+    console.log(result);
+    res.send(result);
+  } catch (e) {
+    res.send(e);
+  }
+});
+
+
+
 router.post("/saveProduct", async (req, res) => {
   let productName = req.body.productName;
   let productDescription = req.body.productDescription;
