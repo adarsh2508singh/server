@@ -15,12 +15,14 @@ const garageRouter= require("./routes/garage.js");
 const userRouter= require("./routes/user.js");
 const sellerRouter= require("./routes/seller.js");
 const productRouter= require("./routes/product.js");
+const bookingRouter=require("./routes/booking.js");
 
 app.use("/cities",cityRouter);
 app.use("/garage",garageRouter);
 app.use('/user',userRouter);
 app.use('/seller',sellerRouter);
 app.use('/product',productRouter);
+app.use('/booking',bookingRouter);
 
 app.get("/",(req,res) =>{
     res.send(`server is running at port ${PORT}`)

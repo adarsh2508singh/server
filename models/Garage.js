@@ -1,9 +1,16 @@
 const mongoose =require('mongoose');
 const GarageSchema =new mongoose.Schema({
     garageImageId:{
-        type: String,
+        data: Buffer,
+        contentType: String
     },
     garageName:{
+        type: String,
+    },
+    garageEmail:{
+        type: String,
+    },
+    password:{
         type: String,
     },
     garageLocation:{
@@ -16,7 +23,10 @@ const GarageSchema =new mongoose.Schema({
     },
     garageContact:{
         type: String,
-    }
+    },
+    booking:[String]
+
+    
 });
 
 const Garage=mongoose.model("garage",GarageSchema);

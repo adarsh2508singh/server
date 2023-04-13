@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const multer= require('multer');
 
 const GarageModel = require("../models/Garage");
 
@@ -14,20 +15,48 @@ router.get("/getGarage", async (req, res) => {
     res.send(e);
   }
 });
+router.get("/getUser", async (req, res) => {
+  let garageEmail = req.query.email;
+  let password = req.query.password;
+
+  try {
+    let result = await GarageModel.find({
+      garageEmail: garageEmail,
+      password: password,
+    });
+
+    if (result.length) {
+      res.send(result);
+    } else {
+      res.send("glat");
+    }
+  } catch (e) {
+    res.send(e);
+  }
+});
+
+
+
 
 router.post("/saveGarage", async (req, res) => {
   let garageImageId = req.body.garageImageId;
   let garageName = req.body.garageName;
+  let garageEmail = req.body.garageEmail;
+  let password = req.body.password;
   let garageLocation = req.body.garageLocation;
   let garageCity = req.body.garageCity;
   let garageContact = req.body.garageContact;
+  let booking=req.body.booking;
 
   let garage = new GarageModel({
     garageImageId: garageImageId,
     garageName: garageName,
+    garageEmail: garageEmail,
+    password: password,
     garageLocation: garageLocation,
     garageCity: garageCity,
     garageContact: garageContact,
+    booking: booking
   });
 
   // check whether a city exist or not
