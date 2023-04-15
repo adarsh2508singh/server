@@ -24,7 +24,9 @@ const GarageSchema =new mongoose.Schema({
     garageContact:{
         type: String,
     },
-    booking:[String]
+    booking:{
+        type:Array,
+    }
 
     
 });
