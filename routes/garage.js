@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 let path = require("path");
 const GarageModel = require("../models/Garage");
@@ -8,9 +9,11 @@ const BookingModel = require("../models/BookAppointment");
 
 const CityModel = require("../models/Cities.js");
 
+
+// storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "images");
+    cb(null, "uploads");
   },
   filename: function (req, file, cb) {
     cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
@@ -84,8 +87,8 @@ router.put("/saveBooking", async (req, res) => {
   res.send(bookings);
 });
 
-router.post("/saveGarage", async (req, res) => {
-  let garageImageId = req.file.filename;
+router.post("/saveGarage",upload.single('testImage'), async (req, res) => {
+
   let garageName = req.body.garageName;
   let garageEmail = req.body.garageEmail;
   let password = req.body.password;
@@ -95,7 +98,10 @@ router.post("/saveGarage", async (req, res) => {
   let booking = req.body.booking;
 
   let garage = new GarageModel({
-    garageImageId: garageImageId,
+    garageImageId:{
+      data: fs.readFileSync("uploads/" + req.file.filename),
+      contentType: "image/png",
+    } ,
     garageName: garageName,
     garageEmail: garageEmail,
     password: password,
