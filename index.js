@@ -16,7 +16,9 @@ const userRouter= require("./routes/user.js");
 const sellerRouter= require("./routes/seller.js");
 const productRouter= require("./routes/product.js");
 const bookingRouter=require("./routes/booking.js");
+const forgot=require("./routes/forgot.js");
 
+app.use("/forgot",forgot);
 app.use("/cities",cityRouter);
 app.use("/garage",garageRouter);
 app.use('/user',userRouter);

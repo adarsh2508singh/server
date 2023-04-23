@@ -21,7 +21,32 @@ router.get("/getUser", async (req, res) => {
   } catch (e) {
     res.send(e);
   }
+  
 });
+
+router.get("/forgotUser", async (req, res) => {
+  let userEmail = req.query.email;
+ 
+
+  try {
+    let result = await UserModel.find({
+      userEmail: userEmail,
+      
+    });
+
+    if (result.length) {
+      res.send(result);
+    } else {
+      res.send("glat");
+    }
+  } catch (e) {
+    res.send(e);
+  }
+  
+});
+
+
+
 
 router.post("/saveUser", async (req, res) => {
   let fullName = req.body.fullName;

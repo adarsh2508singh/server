@@ -13,7 +13,11 @@ const ProductSchema =new mongoose.Schema({
     },
     productPrice:{
         type: String,
-    }
+    },
+    productImage:{
+        data: Buffer,
+        contentType: String
+    },
 });
 
 const Product=mongoose.model("product",ProductSchema);
