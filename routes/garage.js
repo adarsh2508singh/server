@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 let path = require("path");
 const GarageModel = require("../models/Garage");
 const BookingModel = require("../models/BookAppointment");
@@ -11,25 +11,25 @@ const CityModel = require("../models/Cities.js");
 
 
 // storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
+//   },
+// });
 
-const fileFilter = (req, file, cb) => {
-  const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
-  if (allowedFileTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
+// const fileFilter = (req, file, cb) => {
+//   const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+//   if (allowedFileTypes.includes(file.mimetype)) {
+//     cb(null, true);
+//   } else {
+//     cb(null, false);
+//   }
+// };
 
-let upload = multer({ storage, fileFilter });
+// let upload = multer({ storage, fileFilter });
 
 router.get("/getGarage", async (req, res) => {
   let cityName = req.query.cityName;
@@ -87,8 +87,8 @@ router.put("/saveBooking", async (req, res) => {
   res.send(bookings);
 });
 
-router.post("/saveGarage",upload.single('testImage'), async (req, res) => {
-
+router.post("/saveGarage", async (req, res) => {
+  let garageImageId=req.body.garageImageId;
   let garageName = req.body.garageName;
   let garageEmail = req.body.garageEmail;
   let password = req.body.password;
@@ -98,10 +98,7 @@ router.post("/saveGarage",upload.single('testImage'), async (req, res) => {
   let booking = req.body.booking;
 
   let garage = new GarageModel({
-    garageImageId:{
-      data: fs.readFileSync("uploads/" + req.file.filename),
-      contentType: "image/png",
-    } ,
+    garageImageId:garageImageId ,
     garageName: garageName,
     garageEmail: garageEmail,
     password: password,

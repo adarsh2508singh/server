@@ -1,7 +1,10 @@
 const mongoose= require("mongoose");
+require('dotenv').config();
+
+const databaseUrl=process.env.DATABASE_URL;
 mongoose.set("strictQuery",true);
 
-mongoose.connect("mongodb+srv://recbmern:Adarsh%4025@cluster0.vg5lnf1.mongodb.net/car?retryWrites=true&w=majority",
+mongoose.connect(databaseUrl,
 {
  useNewUrlParser:true,
  useUnifiedTopology:true,

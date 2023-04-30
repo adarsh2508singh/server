@@ -1,8 +1,7 @@
 const mongoose =require('mongoose');
 const GarageSchema =new mongoose.Schema({
     garageImageId:{
-        data: Buffer,
-        contentType: String
+        type:String,
     },
     garageName:{
         type: String,
@@ -26,6 +25,9 @@ const GarageSchema =new mongoose.Schema({
     },
     booking:{
         type:Array,
+    },
+    homeService:{
+        type:Boolean,
     }
 
     
