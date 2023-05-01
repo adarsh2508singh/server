@@ -18,7 +18,9 @@ const UserSchema = new mongoose.Schema({
       type: Boolean,
       default:false,
   },
- 
+  booking:{
+    type:Array,
+  },
 });
 
 const User = mongoose.model("user", UserSchema);

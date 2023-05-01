@@ -21,6 +21,9 @@ const BookingSchema = new mongoose.Schema({
     },
     vehicleInfo:{
         type:String,
+    },
+    bookedBy:{
+        type:String,
     }
     
 });
