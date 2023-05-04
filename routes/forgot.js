@@ -38,7 +38,7 @@ router.post("/generate", async (req, res) => {
       to: userEmail,
       subject: "reset password",
       html: `<div  style="text-align: center;">
-      <h1> Life Style </h1>
+      <h1> Road Side Mechanic </h1>
       <br/> 
       <p> Hi, Let's reset your password. </p>
       <p> To reset the password, use the given OTP <p>
