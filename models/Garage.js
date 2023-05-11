@@ -28,6 +28,10 @@ const GarageSchema =new mongoose.Schema({
     },
     homeService:{
         type:Boolean,
+    },
+    paymentVerify:{
+        type:Boolean,
+        default:false,
     }
 
     

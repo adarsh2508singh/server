@@ -9,7 +9,6 @@ const BookingModel = require("../models/BookAppointment");
 
 const CityModel = require("../models/Cities.js");
 
-
 // storage
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
@@ -33,10 +32,14 @@ const CityModel = require("../models/Cities.js");
 
 router.get("/getGarage", async (req, res) => {
   let cityName = req.query.cityName;
+
   try {
-    let result = await GarageModel.find({ garageCity: cityName });
+    let result = await GarageModel.find({ garageCity: cityName,paymentVerify: true });
+    // let payment = await GarageModel.find({ paymentVerify: true });
     console.log(result);
-    res.send(result);
+    
+      res.send(result);
+    
   } catch (e) {
     res.send(e);
   }
@@ -77,7 +80,7 @@ router.put("/saveBooking", async (req, res) => {
   let garageid = req.body.garageid;
   let bookings = await GarageModel.find({ _id: garageid });
 
-  console.log(bookings[0])
+  console.log(bookings[0]);
   let allBookings = bookings[0].booking;
   allBookings.push(bookingId);
 
@@ -87,8 +90,25 @@ router.put("/saveBooking", async (req, res) => {
   res.send(bookings);
 });
 
+router.put("/updatepayment", async (req, res) => {
+  const garageEmail = req.body.garageEmail;
+ 
+  //find the user to update the payment
+
+  let result = await GarageModel.find({ garageEmail: garageEmail });
+  result[0].paymentVerify = true;
+
+ await result[0].save();
+
+  res.send("OK");
+});
+
+
+
+
+
 router.post("/saveGarage", async (req, res) => {
-  let garageImageId=req.body.garageImageId;
+  let garageImageId = req.body.garageImageId;
   let garageName = req.body.garageName;
   let garageEmail = req.body.garageEmail;
   let password = req.body.password;
@@ -96,10 +116,10 @@ router.post("/saveGarage", async (req, res) => {
   let garageCity = req.body.garageCity;
   let garageContact = req.body.garageContact;
   let booking = req.body.booking;
-  let homeService=req.body.homeService;
+  let homeService = req.body.homeService;
 
   let garage = new GarageModel({
-    garageImageId:garageImageId ,
+    garageImageId: garageImageId,
     garageName: garageName,
     garageEmail: garageEmail,
     password: password,
@@ -107,7 +127,7 @@ router.post("/saveGarage", async (req, res) => {
     garageCity: garageCity,
     garageContact: garageContact,
     booking: booking,
-    homeService:homeService,
+    homeService: homeService,
   });
 
   // check whether a city exist or not
