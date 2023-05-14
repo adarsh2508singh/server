@@ -36,6 +36,8 @@ router.post("/saveBooking", async (req, res) => {
   let problem = req.body.problem;
   let vehicleInfo = req.body.vehicleInfo;
   let bookedBy = req.body.bookedBy;
+  let  vehicleModel= req.body.vehicleModel;
+  let   service=req.body.service;
 
   let booking = new BookingModel({
     fullName: fullName,
@@ -45,6 +47,8 @@ router.post("/saveBooking", async (req, res) => {
     time: time,
     problem: problem,
     vehicleInfo: vehicleInfo,
+    vehicleModel: vehicleModel,
+    service:  service,
     bookedBy: bookedBy,
   });
   try {

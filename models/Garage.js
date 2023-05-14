@@ -29,6 +29,9 @@ const GarageSchema =new mongoose.Schema({
     homeService:{
         type:Boolean,
     },
+    vehicleType:{
+        type: String,
+    },
     paymentVerify:{
         type:Boolean,
         default:false,

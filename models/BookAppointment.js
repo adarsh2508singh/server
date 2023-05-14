@@ -22,6 +22,12 @@ const BookingSchema = new mongoose.Schema({
     vehicleInfo:{
         type:String,
     },
+    vehicleModel:{
+        type:String,
+    },
+    service:{
+        type:String,
+    },
     bookedBy:{
         type:String,
     }

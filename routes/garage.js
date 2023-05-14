@@ -117,6 +117,7 @@ router.post("/saveGarage", async (req, res) => {
   let garageContact = req.body.garageContact;
   let booking = req.body.booking;
   let homeService = req.body.homeService;
+  let  vehicleType= req.body.vehicleType;
 
   let garage = new GarageModel({
     garageImageId: garageImageId,
@@ -128,6 +129,7 @@ router.post("/saveGarage", async (req, res) => {
     garageContact: garageContact,
     booking: booking,
     homeService: homeService,
+    vehicleType:vehicleType,
   });
 
   // check whether a city exist or not
