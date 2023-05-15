@@ -45,6 +45,22 @@ router.get("/getGarage", async (req, res) => {
   }
 });
 
+router.get("/getGarageByLoc", async (req, res) => {
+
+
+  try {
+    let result = await GarageModel.find({});
+   
+    console.log(result);
+    
+      res.send(result);
+    
+  } catch (e) {
+    res.send(e);
+  }
+});
+
+
 router.get("/getGarageById", async (req, res) => {
   let garageId = req.query.garageId;
   try {
@@ -118,6 +134,8 @@ router.post("/saveGarage", async (req, res) => {
   let booking = req.body.booking;
   let homeService = req.body.homeService;
   let  vehicleType= req.body.vehicleType;
+  let   latitude= req.body.latitude;
+ let   longitude= req.body.longitude;
 
   let garage = new GarageModel({
     garageImageId: garageImageId,
@@ -130,6 +148,9 @@ router.post("/saveGarage", async (req, res) => {
     booking: booking,
     homeService: homeService,
     vehicleType:vehicleType,
+    latitude:latitude,
+    longitude:longitude,
+
   });
 
   // check whether a city exist or not

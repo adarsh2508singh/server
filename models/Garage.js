@@ -20,6 +20,17 @@ const GarageSchema =new mongoose.Schema({
         type: String,
        
     },
+    latitude: {
+        type: Number,
+       
+      },
+      longitude: {
+        type: Number,
+       
+      },
+
+
+
     garageContact:{
         type: String,
     },
