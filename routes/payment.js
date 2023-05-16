@@ -32,7 +32,7 @@ router.post("/paymentverification", async (req, res) => {
         razorpay_signature: razorpay_signature,
       });
       res.redirect(
-        "https://curious-seahorse-e0cd07.netlify.app/paymentsuccess?reference=" + razorpay_payment_id
+        "https://roadsidemechanic.netlify.app/paymentsuccess?reference=" + razorpay_payment_id
       );
     } catch (error) {
       res.status(500).json({
