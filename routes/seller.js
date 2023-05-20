@@ -23,6 +23,28 @@ router.get("/getUser", async (req, res) => {
   }
 });
 
+router.get("/forgotUser", async (req, res) => {
+  let userEmail = req.query.email;
+
+  try {
+    let result = await SellerModel.find({
+      sellerEmail: userEmail,
+    });
+
+    if (result.length) {
+      res.send(result);
+    } else {
+      res.send("glat");
+    }
+  } catch (e) {
+    res.send(e);
+  }
+});
+
+
+
+
+
 router.post("/saveSeller", async (req, res) => {
   let sellerName = req.body.sellerName;
   let shopName = req.body.shopName;

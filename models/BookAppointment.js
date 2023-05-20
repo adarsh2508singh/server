@@ -30,6 +30,9 @@ const BookingSchema = new mongoose.Schema({
     },
     bookedBy:{
         type:String,
+    },
+    address:{
+        type:String,
     }
     
 });

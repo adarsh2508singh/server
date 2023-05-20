@@ -60,6 +60,24 @@ router.get("/getGarageByLoc", async (req, res) => {
   }
 });
 
+router.get("/forgotUser", async (req, res) => {
+  let userEmail = req.query.email;
+
+  try {
+    let result = await GarageModel.find({
+      garageEmail: userEmail,
+    });
+
+    if (result.length) {
+      res.send(result);
+    } else {
+      res.send("glat");
+    }
+  } catch (e) {
+    res.send(e);
+  }
+});
+
 
 router.get("/getGarageById", async (req, res) => {
   let garageId = req.query.garageId;

@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const nodemailer = require("nodemailer");
-
 const UserModel = require("../models/User");
+const GarageModel = require("../models/Garage");
+const SellerModel = require("../models/Seller.js");
+
 require('dotenv').config();
 
 const sendMail = process.env.MAIL_USER;
@@ -76,9 +78,18 @@ router.put("/updatepassword", async (req, res) => {
   //find the user to update the password
 
   let result = await UserModel.find({ userEmail: userEmail });
+  let result1 = await GarageModel.find({ garageEmail : userEmail });
+  let result2 = await SellerModel.find({ sellerEmail : userEmail });
+
+  
+  
   result[0].userPassword = updatedPassword;
+  result1[0].password = updatedPassword;
+  result2[0]. sellerPassword= updatedPassword;
 
  await result[0].save();
+ await result1[0].save();
+ await result2[0].save();
 
   res.send("OK");
 });
