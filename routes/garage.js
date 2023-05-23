@@ -6,7 +6,7 @@ const fs = require("fs");
 let path = require("path");
 const GarageModel = require("../models/Garage");
 const BookingModel = require("../models/BookAppointment");
-
+// const imageUpload= require("../controller/imageUpload")
 const CityModel = require("../models/Cities.js");
 
 // storage
@@ -141,8 +141,8 @@ router.put("/updatepayment", async (req, res) => {
 
 
 
-router.post("/saveGarage", async (req, res) => {
-  let garageImageId = req.body.garageImageId;
+router.post("/saveGarage",/*imageUpload.uploadImage */async (req, res) => {
+  // let garageImageId = req.body.garageImageId;
   let garageName = req.body.garageName;
   let garageEmail = req.body.garageEmail;
   let password = req.body.password;
@@ -156,7 +156,7 @@ router.post("/saveGarage", async (req, res) => {
  let   longitude= req.body.longitude;
 
   let garage = new GarageModel({
-    garageImageId: garageImageId,
+    // garageImageId: garageImageId, 
     garageName: garageName,
     garageEmail: garageEmail,
     password: password,
