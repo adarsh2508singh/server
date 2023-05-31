@@ -1,20 +1,51 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
 const fs = require("fs");
 // const { v4: uuidv4 } = require("uuid");
+const aws = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+require("dotenv").config();
 let path = require("path");
 const GarageModel = require("../models/Garage");
 const BookingModel = require("../models/BookAppointment");
-// const imageUpload= require("../controller/imageUpload")
+//  const imageUpload= require("../controller/imageUpload")
 const CityModel = require("../models/Cities.js");
+
+aws.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY,
+  secretAccessKey: process.env.S3_SECRECT_ACCESS_KEY,
+  region: process.env.S3_BUCKET_REGION,
+});
+const s3 = new aws.S3();
+const bucketName = process.env.AWS_BUCKET_NAME;
+
+var upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: bucketName,
+    
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    metadata: function (req, file, cb) {
+      cb(null, {
+        fieldName: file.fieldname
+      });
+    },
+    key: function (req, file, cb) {
+      console.log(file);
+      cb(null, `image-${Date.now()}.jpeg`);
+    },
+  }),
+});
+
+
 
 // storage
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
 //     cb(null, "uploads");
-//   },
-//   filename: function (req, file, cb) {
+//   },cb
+//   filename: function (req, file, ) {
 //     cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
 //   },
 // });
@@ -34,27 +65,25 @@ router.get("/getGarage", async (req, res) => {
   let cityName = req.query.cityName;
 
   try {
-    let result = await GarageModel.find({ garageCity: cityName,paymentVerify: true });
+    let result = await GarageModel.find({
+      garageCity: cityName,
+      paymentVerify: true,
+    });
     // let payment = await GarageModel.find({ paymentVerify: true });
     console.log(result);
-    
-      res.send(result);
-    
+
+    res.send(result);
   } catch (e) {
     res.send(e);
   }
 });
 
 router.get("/getGarageByLoc", async (req, res) => {
-
-
   try {
     let result = await GarageModel.find({});
+
    
-    console.log(result);
-    
-      res.send(result);
-    
+    res.send(result);
   } catch (e) {
     res.send(e);
   }
@@ -77,7 +106,6 @@ router.get("/forgotUser", async (req, res) => {
     res.send(e);
   }
 });
-
 
 router.get("/getGarageById", async (req, res) => {
   let garageId = req.query.garageId;
@@ -126,23 +154,22 @@ router.put("/saveBooking", async (req, res) => {
 
 router.put("/updatepayment", async (req, res) => {
   const garageEmail = req.body.garageEmail;
- 
   //find the user to update the payment
 
+
   let result = await GarageModel.find({ garageEmail: garageEmail });
+
   result[0].paymentVerify = true;
 
- await result[0].save();
+  await result[0].save();
+  
+
 
   res.send("OK");
 });
 
+router.post("/saveGarage", upload.single("mypic"), async (req, res) => {
 
-
-
-
-router.post("/saveGarage",/*imageUpload.uploadImage */async (req, res) => {
-  // let garageImageId = req.body.garageImageId;
   let garageName = req.body.garageName;
   let garageEmail = req.body.garageEmail;
   let password = req.body.password;
@@ -151,12 +178,12 @@ router.post("/saveGarage",/*imageUpload.uploadImage */async (req, res) => {
   let garageContact = req.body.garageContact;
   let booking = req.body.booking;
   let homeService = req.body.homeService;
-  let  vehicleType= req.body.vehicleType;
-  let   latitude= req.body.latitude;
- let   longitude= req.body.longitude;
+  let vehicleType = req.body.vehicleType;
+  let latitude = req.body.latitude;
+  let longitude = req.body.longitude;
 
   let garage = new GarageModel({
-    // garageImageId: garageImageId, 
+   garageImageId: req.file.location,
     garageName: garageName,
     garageEmail: garageEmail,
     password: password,
@@ -165,10 +192,9 @@ router.post("/saveGarage",/*imageUpload.uploadImage */async (req, res) => {
     garageContact: garageContact,
     booking: booking,
     homeService: homeService,
-    vehicleType:vehicleType,
-    latitude:latitude,
-    longitude:longitude,
-
+    vehicleType: vehicleType,
+    latitude: latitude,
+    longitude: longitude,
   });
 
   // check whether a city exist or not

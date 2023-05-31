@@ -9,7 +9,7 @@ router.get("/getBooking", async (req, res) => {
 
   try {
     let result = await BookingModel.find({ _id: bookingId });
-    console.log(result);
+ 
     res.send(result);
   } catch (e) {
     res.send(e);
@@ -20,7 +20,7 @@ router.get("/getBookingById", async (req, res) => {
 
   try {
     let result = await BookingModel.find({ _id: bookingId });
-    console.log(result);
+  
     res.send(result);
   } catch (e) {
     res.send(e);

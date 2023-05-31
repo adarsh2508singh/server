@@ -7,7 +7,7 @@ const CityModel = require("../models/Cities");
 router.get("/getCities", async (req, res) => {
   try {
     let result = await CityModel.find({});
-    console.log(result);
+  
     res.send(result);
   } catch (e) {
     res.send(e);

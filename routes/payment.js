@@ -1,13 +1,13 @@
 const Razorpay = require("razorpay");
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const crypto = require("crypto");
 const router = express.Router();
-const Payment = require('../models/PaymentModel') ;
+const Payment = require("../models/PaymentModel");
 const checkout = require("../controller/paymentController");
+const GarageModel = require("../models/Garage");
 
-
-router.post("/checkout",checkout);
+router.post("/checkout", checkout);
 router.post("/paymentverification", async (req, res) => {
   var razorpay_order_id = req.body.razorpay_order_id;
   var razorpay_payment_id = req.body.razorpay_payment_id;
@@ -31,8 +31,9 @@ router.post("/paymentverification", async (req, res) => {
         razorpay_payment_id: razorpay_payment_id,
         razorpay_signature: razorpay_signature,
       });
+
       res.redirect(
-        "https://roadsidemechanic.netlify.app/paymentsuccess?reference=" + razorpay_payment_id
+        "http://roadsidemechanics.in/paymentsuccess?reference=" + razorpay_payment_id
       );
     } catch (error) {
       res.status(500).json({
@@ -46,9 +47,5 @@ router.post("/paymentverification", async (req, res) => {
     });
   }
 });
-
-
-
-
 
 module.exports = router;

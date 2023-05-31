@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
+
+const aws = require("aws-sdk");
 const multer = require("multer");
+const multerS3 = require("multer-s3");
+require("dotenv").config();
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 let path = require("path");
@@ -8,27 +12,34 @@ const ProductModel = require("../models/Product.js");
 
 
 // storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "productImages");
-  },
-  filename: function (req, file, cb) {
-    cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
-  },
+
+
+
+aws.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY,
+  secretAccessKey: process.env.S3_SECRECT_ACCESS_KEY,
+  region: process.env.S3_BUCKET_REGION,
 });
+const s3 = new aws.S3();
+const bucketName = process.env.AWS_BUCKET_NAME;
 
-const fileFilter = (req, file, cb) => {
-  const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
-  if (allowedFileTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-let upload = multer({ storage, fileFilter });
-
-
+var upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: bucketName,
+    
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    metadata: function (req, file, cb) {
+      cb(null, {
+        fieldName: file.fieldname
+      });
+    },
+    key: function (req, file, cb) {
+      console.log(file);
+      cb(null, `product-${Date.now()}.jpeg`);
+    },
+  }),
+});
 
 
 
@@ -51,17 +62,14 @@ router.get("/getProduct", async (req, res) => {
 
 
 
-router.post("/saveProduct",upload.single('testImage'), async (req, res) => {
+router.post("/saveProduct",upload.single('ProductImage'), async (req, res) => {
   let productName = req.body.productName;
   let productDescription = req.body.productDescription;
   let productType = req.body.productType;
   let productPrice = req.body.productPrice;
 
   let product = new ProductModel({
-    productImage:{
-      data: fs.readFileSync("productImages/" + req.file.filename),
-      contentType: "image/png",
-    } ,
+    productImage:req.file.location,
     productName: productName,
     productDescription: productDescription,
     productType: productType,
