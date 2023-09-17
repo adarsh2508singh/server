@@ -41,7 +41,7 @@ const GarageSchema =new mongoose.Schema({
         type:Boolean,
     },
     vehicleType:{
-        type: String,
+        type: Array,
     },
     paymentVerify:{
         type:Boolean,

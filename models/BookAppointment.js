@@ -33,6 +33,10 @@ const BookingSchema = new mongoose.Schema({
     },
     address:{
         type:String,
+    },
+    isDone:{
+        type:Boolean,
+        default:false,
     }
     
 });
