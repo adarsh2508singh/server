@@ -178,6 +178,7 @@ router.post("/saveGarage", upload.single("mypic"), async (req, res) => {
   let garageContact = req.body.garageContact;
   let booking = req.body.booking;
   let homeService = req.body.homeService;
+  let towService = req.body.towService;
   let vehicleType = req.body.vehicleType;
   let latitude = req.body.latitude;
   let longitude = req.body.longitude;
@@ -192,6 +193,7 @@ router.post("/saveGarage", upload.single("mypic"), async (req, res) => {
     garageContact: garageContact,
     booking: booking,
     homeService: homeService,
+    towService:towService,
     vehicleType: vehicleType,
     latitude: latitude,
     longitude: longitude,

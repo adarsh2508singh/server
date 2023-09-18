@@ -40,6 +40,9 @@ const GarageSchema =new mongoose.Schema({
     homeService:{
         type:Boolean,
     },
+    towService:{
+        type:Boolean,
+    },
     vehicleType:{
         type: Array,
     },
