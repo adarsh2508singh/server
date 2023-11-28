@@ -24,11 +24,11 @@ var upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: bucketName,
-    
+
     contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata: function (req, file, cb) {
       cb(null, {
-        fieldName: file.fieldname
+        fieldName: file.fieldname,
       });
     },
     key: function (req, file, cb) {
@@ -37,8 +37,6 @@ var upload = multer({
     },
   }),
 });
-
-
 
 // storage
 // const storage = multer.diskStorage({
@@ -82,7 +80,6 @@ router.get("/getGarageByLoc", async (req, res) => {
   try {
     let result = await GarageModel.find({});
 
-   
     res.send(result);
   } catch (e) {
     res.send(e);
@@ -156,20 +153,15 @@ router.put("/updatepayment", async (req, res) => {
   const garageEmail = req.body.garageEmail;
   //find the user to update the payment
 
-
   let result = await GarageModel.find({ garageEmail: garageEmail });
 
   result[0].paymentVerify = true;
 
   await result[0].save();
-  
-
-
   res.send("OK");
 });
 
 router.post("/saveGarage", upload.single("mypic"), async (req, res) => {
-
   let garageName = req.body.garageName;
   let garageEmail = req.body.garageEmail;
   let password = req.body.password;
@@ -184,7 +176,7 @@ router.post("/saveGarage", upload.single("mypic"), async (req, res) => {
   let longitude = req.body.longitude;
 
   let garage = new GarageModel({
-   garageImageId: req.file.location,
+    garageImageId: req.file.location,
     garageName: garageName,
     garageEmail: garageEmail,
     password: password,
@@ -193,7 +185,7 @@ router.post("/saveGarage", upload.single("mypic"), async (req, res) => {
     garageContact: garageContact,
     booking: booking,
     homeService: homeService,
-    towService:towService,
+    towService: towService,
     vehicleType: vehicleType,
     latitude: latitude,
     longitude: longitude,
